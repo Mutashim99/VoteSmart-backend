@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VoteService {
@@ -26,24 +27,31 @@ public class VoteService {
             return "User has already voted in this poll.";
         }
 
-        // Create and save the vote
-        Vote vote = new Vote();
-        vote.setPollId(pollId);
-        vote.setCandidateId(candidateId);
-        vote.setUserId(voterId); // Use userId
-        voteRepository.save(vote);
-
-        // Update the candidate's vote count in the poll
-        pollRepository.findById(pollId).ifPresent(poll -> {
-            poll.getCandidates().stream()
-                    .filter(candidate -> candidate.getId().equals(candidateId))
+        // Find the poll and verify the candidate exists
+        Optional<Poll> optionalPoll = pollRepository.findById(pollId);
+        if (optionalPoll.isPresent()) {
+            Poll poll = optionalPoll.get();
+            Candidate candidate = poll.getCandidates().stream()
+                    .filter(c -> c.getId().equals(candidateId))
                     .findFirst()
-                    .ifPresent(candidate -> candidate.setVoteCount(candidate.getVoteCount() + 1));
-            pollRepository.save(poll); // Save updated poll
-        });
+                    .orElse(null);
 
-        return "Vote recorded successfully.";
+            if (candidate == null) {
+                return "Candidate not found in the poll.";
+            }
+
+            // Record the vote and update the vote count
+            Vote vote = new Vote(pollId, candidateId, voterId);
+            voteRepository.save(vote);
+            candidate.setVoteCount(candidate.getVoteCount() + 1);
+            pollRepository.save(poll);
+
+            return "Vote recorded successfully.";
+        } else {
+            return "Poll not found.";
+        }
     }
+
 
     // Get voting results for a poll
     public List<Candidate> getVotingResults(String pollId) {

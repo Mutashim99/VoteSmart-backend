@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PollService {
@@ -19,9 +20,14 @@ public class PollService {
 
     // Create a new poll
     public Poll createPoll(String title, String description, List<Candidate> candidates, String creatorId) {
-        Poll poll = new Poll(title, description, candidates, creatorId);  // Pass creatorId here
+        // Assign unique IDs to each candidate
+        candidates.forEach(candidate -> candidate.setId(UUID.randomUUID().toString()));
+
+        // Create the Poll object with updated candidates
+        Poll poll = new Poll(title, description, candidates, creatorId);
         Poll savedPoll = pollRepository.save(poll);
 
+        // Link poll with the user who created it
         userRepository.findById(creatorId).ifPresent(user -> {
             user.getPollIds().add(savedPoll.getId());
             userRepository.save(user);
