@@ -4,7 +4,6 @@ import me.mutashim.votesmart.model.Candidate;
 import me.mutashim.votesmart.model.Poll;
 import me.mutashim.votesmart.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +24,13 @@ public class PollController {
             @RequestParam String description,
             @RequestBody List<Candidate> candidates,
             HttpSession session) {
-        // Attempt to retrieve the user ID from the session
+
         String creatorId = (String) session.getAttribute("userId");
 
         if (creatorId == null) {
-            return ResponseEntity.status(401).body("User not authenticated.");  // Returning a ResponseEntity<String> here
+            return ResponseEntity.status(401).body("User not authenticated.");
         }
-        // If authenticated, proceed with poll creation
+
         Poll poll = pollService.createPoll(title, description, candidates, creatorId);
         return ResponseEntity.ok(poll);
     }
@@ -39,14 +38,9 @@ public class PollController {
 
 
     @GetMapping
-    public ResponseEntity<List<Poll>> getAllPolls(HttpSession session) {
-        String currentUserId = (String) session.getAttribute("userId"); // Retrieve the user ID from the session
-        if (currentUserId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Return 401 if user ID is not found
-        }
-        return ResponseEntity.ok(pollService.getPollsByCurrentUser(currentUserId));
+    public ResponseEntity<List<Poll>> getAllPolls() {
+        return ResponseEntity.ok(pollService.getAllPolls());
     }
-
 
     @GetMapping("/{pollId}")
     public ResponseEntity<Poll> getPollById(@PathVariable String pollId) {

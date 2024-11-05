@@ -12,14 +12,15 @@ public class Poll {
     private String title;
     private String description;
     private List<Candidate> candidates;
-
+    private String creatorId;
     // Constructors
     public Poll() {}
 
-    public Poll(String title, String description, List<Candidate> candidates) {
+    public Poll(String title, String description, List<Candidate> candidates, String creatorId) {
         this.title = title;
         this.description = description;
         this.candidates = candidates;
+        this.creatorId = creatorId;
     }
 
     // Getters and Setters
@@ -45,6 +46,14 @@ public class Poll {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public List<Candidate> getCandidates() {

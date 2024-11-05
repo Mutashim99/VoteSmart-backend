@@ -19,10 +19,9 @@ public class PollService {
 
     // Create a new poll
     public Poll createPoll(String title, String description, List<Candidate> candidates, String creatorId) {
-        Poll poll = new Poll(title, description, candidates);
+        Poll poll = new Poll(title, description, candidates, creatorId);  // Pass creatorId here
         Poll savedPoll = pollRepository.save(poll);
 
-        // Add the poll ID to the creator's poll list
         userRepository.findById(creatorId).ifPresent(user -> {
             user.getPollIds().add(savedPoll.getId());
             userRepository.save(user);
@@ -34,10 +33,6 @@ public class PollService {
     // Retrieve all polls
     public List<Poll> getAllPolls() {
         return pollRepository.findAll();
-    }
-
-    public List<Poll> getPollsByCurrentUser(String currentUserId) {
-        return pollRepository.findByCreatedBy(currentUserId);
     }
 
     // Retrieve a poll by ID
