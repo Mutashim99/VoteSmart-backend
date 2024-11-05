@@ -4,6 +4,7 @@ import me.mutashim.votesmart.model.Candidate;
 import me.mutashim.votesmart.model.Poll;
 import me.mutashim.votesmart.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +39,14 @@ public class PollController {
 
 
     @GetMapping
-    public ResponseEntity<List<Poll>> getAllPolls() {
-        return ResponseEntity.ok(pollService.getAllPolls());
+    public ResponseEntity<List<Poll>> getAllPolls(HttpSession session) {
+        String currentUserId = (String) session.getAttribute("userId"); // Retrieve the user ID from the session
+        if (currentUserId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Return 401 if user ID is not found
+        }
+        return ResponseEntity.ok(pollService.getPollsByCurrentUser(currentUserId));
     }
+
 
     @GetMapping("/{pollId}")
     public ResponseEntity<Poll> getPollById(@PathVariable String pollId) {

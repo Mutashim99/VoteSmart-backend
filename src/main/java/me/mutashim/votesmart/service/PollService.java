@@ -36,6 +36,10 @@ public class PollService {
         return pollRepository.findAll();
     }
 
+    public List<Poll> getPollsByCurrentUser(String currentUserId) {
+        return pollRepository.findByCreatedBy(currentUserId);
+    }
+
     // Retrieve a poll by ID
     public Optional<Poll> getPollById(String pollId) {
         return pollRepository.findById(pollId);
