@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +37,19 @@ public class PollController {
         return ResponseEntity.ok(poll);
     }
 
+    @GetMapping("/user/polls")
+    public ResponseEntity<List<Poll>> getPollsByUser(HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId == null) {
+            // Return an empty list or an appropriate response if the user is not authenticated
+            return ResponseEntity.status(401).body(Collections.emptyList()); // Return an empty list
+            // or return ResponseEntity.status(401).build(); // If you prefer to return just the status
+        }
+
+        List<Poll> userPolls = pollService.getPollsByUserId(userId);
+        return ResponseEntity.ok(userPolls);
+    }
 
 
     @GetMapping

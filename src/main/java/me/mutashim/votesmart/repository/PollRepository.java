@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface PollRepository extends MongoRepository<Poll, String> {
     List<Poll> findByTitleContaining(String title);  // Example custom method to search polls by title
+    List<Poll> findByCreatorId(String creatorId);
 }

@@ -36,6 +36,10 @@ public class PollService {
         return savedPoll;
     }
 
+    public List<Poll> getPollsByUserId(String userId) {
+        return pollRepository.findByCreatorId(userId); // Fetch polls by creator ID
+    }
+
     // Retrieve all polls
     public List<Poll> getAllPolls() {
         return pollRepository.findAll();
