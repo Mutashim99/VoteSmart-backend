@@ -11,7 +11,6 @@ public class Vote {
     private String candidateId;
     private String userId;
 
-    // Constructors
     public Vote() {}
 
     public Vote(String pollId, String candidateId, String userId) {
@@ -20,7 +19,7 @@ public class Vote {
         this.userId = userId;
     }
 
-    // Getters and Setters
+   
     public String getId() {
         return id;
     }

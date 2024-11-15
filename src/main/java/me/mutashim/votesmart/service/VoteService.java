@@ -20,14 +20,14 @@ public class VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
-    // Allow a user to vote on a candidate in a poll
+
     public String vote(String pollId, String candidateId, String voterId) {
-        // Check if the user has already voted in this poll
+
         if (voteRepository.existsByPollIdAndUserId(pollId, voterId)) {
             return "User has already voted in this poll.";
         }
 
-        // Find the poll and verify the candidate exists
+
         Optional<Poll> optionalPoll = pollRepository.findById(pollId);
         if (optionalPoll.isPresent()) {
             Poll poll = optionalPoll.get();
@@ -40,7 +40,7 @@ public class VoteService {
                 return "Candidate not found in the poll.";
             }
 
-            // Record the vote and update the vote count
+
             Vote vote = new Vote(pollId, candidateId, voterId);
             voteRepository.save(vote);
             candidate.setVoteCount(candidate.getVoteCount() + 1);
@@ -53,14 +53,14 @@ public class VoteService {
     }
 
 
-    // Get voting results for a poll
+
     public List<Candidate> getVotingResults(String pollId) {
         return pollRepository.findById(pollId)
                 .map(Poll::getCandidates)
                 .orElseThrow(() -> new IllegalArgumentException("Poll not found."));
     }
 
-    // Check if a user has already voted
+
     public boolean hasVoted(String pollId, String voterId) {
         return voteRepository.existsByPollIdAndUserId(pollId, voterId);
     }

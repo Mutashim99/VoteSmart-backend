@@ -11,9 +11,9 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private List<String> pollIds;  // List of IDs for polls created by this user
+    private List<String> pollIds;
 
-    // Constructors
+
     public User() {}
 
     public User(String name, String email, String password, List<String> pollIds) {
@@ -23,7 +23,7 @@ public class User {
         this.pollIds = pollIds;
     }
 
-    // Getters and Setters
+
     public String getId() {
         return id;
     }

@@ -20,12 +20,12 @@ public class UserService {
     @Autowired
     private PollRepository pollRepository;
 
-    // Retrieve user by ID
+
     public Optional<User> getUserById(String userId) {
         return userRepository.findById(userId);
     }
 
-    // Retrieve polls created by the user
+
     public List<Poll> getUserPolls(String userId) {
         Optional<User> user = userRepository.findById(userId);
         return user.map(User::getPollIds)

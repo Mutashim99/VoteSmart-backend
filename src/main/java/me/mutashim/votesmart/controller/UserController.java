@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Get user details by ID
+
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId, HttpSession session) {
         String sessionUserId = (String) session.getAttribute("userId");
@@ -29,7 +29,7 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Get the polls created by a user
+
     @GetMapping("/{userId}/polls")
     public ResponseEntity<List<Poll>> getUserPolls(@PathVariable String userId, HttpSession session) {
         String sessionUserId = (String) session.getAttribute("userId");

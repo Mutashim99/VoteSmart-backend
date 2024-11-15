@@ -20,7 +20,6 @@ public class LoginController {
     public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password, HttpSession session) {
         Optional<User> userOptional = loginService.loginUser(email, password);
         if (userOptional.isPresent()) {
-            // Store user ID in session
             session.setAttribute("userId", userOptional.get().getId());
             return ResponseEntity.ok("Login successful. User ID stored in session.");
         } else {

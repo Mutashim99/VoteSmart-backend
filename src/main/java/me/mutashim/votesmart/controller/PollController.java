@@ -42,9 +42,9 @@ public class PollController {
         String userId = (String) session.getAttribute("userId");
 
         if (userId == null) {
-            // Return an empty list or an appropriate response if the user is not authenticated
-            return ResponseEntity.status(401).body(Collections.emptyList()); // Return an empty list
-            // or return ResponseEntity.status(401).build(); // If you prefer to return just the status
+
+            return ResponseEntity.status(401).body(Collections.emptyList());
+
         }
 
         List<Poll> userPolls = pollService.getPollsByUserId(userId);

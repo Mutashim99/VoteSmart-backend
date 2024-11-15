@@ -17,6 +17,6 @@ public class LoginService {
         if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
             return userOptional;
         }
-        return Optional.empty();  // Return empty if authentication fails
+        return Optional.empty();
     }
 }

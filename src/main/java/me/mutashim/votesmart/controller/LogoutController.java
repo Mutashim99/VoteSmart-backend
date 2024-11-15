@@ -12,7 +12,6 @@ public class LogoutController {
 
     @DeleteMapping
     public ResponseEntity<String> logout(HttpSession session) {
-        // Invalidate the session to log out the user
         session.invalidate();
         return ResponseEntity.ok("User logged out successfully.");
     }

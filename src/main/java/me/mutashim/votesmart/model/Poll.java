@@ -13,7 +13,6 @@ public class Poll {
     private String description;
     private List<Candidate> candidates;
     private String creatorId;
-    // Constructors
     public Poll() {}
 
     public Poll(String title, String description, List<Candidate> candidates, String creatorId) {
@@ -23,7 +22,6 @@ public class Poll {
         this.creatorId = creatorId;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

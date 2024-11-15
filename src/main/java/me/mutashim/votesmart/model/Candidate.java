@@ -2,30 +2,30 @@ package me.mutashim.votesmart.model;
 
 public class Candidate {
 
-    private String id; // Unique identifier for the candidate
+    private String id;
     private String name;
     private int age;
     private String description;
     private int voteCount;
 
-    // Constructors
+
     public Candidate() {}
 
     public Candidate(String id, String name, int age, String description, int voteCount) {
-        this.id = id; // Initialize the ID
+        this.id = id;
         this.name = name;
         this.age = age;
         this.description = description;
         this.voteCount = voteCount;
     }
 
-    // Getters and Setters
+
     public String getId() {
-        return id; // Getter for ID
+        return id;
     }
 
     public void setId(String id) {
-        this.id = id; // Setter for ID
+        this.id = id;
     }
 
     public String getName() {

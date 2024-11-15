@@ -7,5 +7,5 @@ import java.util.List;
 public interface VoteRepository extends MongoRepository<Vote, String> {
     List<Vote> findByPollId(String pollId);
     List<Vote> findByUserId(String userId);
-    boolean existsByPollIdAndUserId(String pollId, String userId);  // Checks if a user has already voted in a poll
+    boolean existsByPollIdAndUserId(String pollId, String userId);
 }
