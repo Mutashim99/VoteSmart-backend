@@ -123,7 +123,7 @@ public class AdminService {
                 + "<p><strong>Created by:</strong> " + user.getName() + " (" + user.getEmail() + ")</p>"
                 + "<p><strong>Poll URL:</strong> <a href='http://localhost:8080/poll/" + poll.getId() + "'>View Poll</a></p>"
                 + "<p>Your poll is now live and ready to receive votes.</p>"
-                + "<p>Thank you for using our platform!</p>";
+                + "<p>Thank you for using VoteSmart!</p>";
     }
 
     // Build structured email body for poll rejection
