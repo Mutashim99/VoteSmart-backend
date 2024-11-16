@@ -15,7 +15,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    // Authenticate Admin
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         if (adminService.authenticateAdmin(username, password)) {
@@ -25,14 +24,14 @@ public class AdminController {
         }
     }
 
-    // Approve a poll
+
     @PostMapping("/approve/{pollId}")
     public ResponseEntity<String> approvePoll(@PathVariable String pollId) {
         String result = adminService.approvePoll(pollId);
         return ResponseEntity.ok(result);
     }
 
-    // Reject a poll
+
     @PostMapping("/reject/{pollId}")
     public ResponseEntity<String> rejectPoll(@PathVariable String pollId) {
         String result = adminService.rejectPoll(pollId);

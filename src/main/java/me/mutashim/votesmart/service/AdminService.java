@@ -28,31 +28,31 @@ public class AdminService {
     @Autowired
     private EmailService emailService;
 
-    // Fetch polls that are not approved
+
     public List<Poll> getPendingPolls() {
         return pollRepository.findByApproved(false);
     }
 
-    // Check Admin Credentials
+
     public boolean authenticateAdmin(String username, String password) {
         Admin admin = adminRepository.findByUsername(username);
         return admin != null && admin.getPassword().equals(password);
     }
 
-    // Approve a poll
+
     public String approvePoll(String pollId) {
         Optional<Poll> pollOptional = pollRepository.findById(pollId);
         if (pollOptional.isPresent()) {
             Poll poll = pollOptional.get();
-            poll.setApproved(true); // Set the poll as approved
+            poll.setApproved(true);
             pollRepository.save(poll);
 
-            // Send approval email to the poll creator
+
             Optional<User> userOptional = userRepository.findById(poll.getCreatorId());
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
 
-                // Build structured email content
+
                 String emailBody = buildPollApprovalEmail(poll, user);
 
                 emailService.sendEmail(user.getEmail(), "Your Poll has been Approved", emailBody);
@@ -64,37 +64,37 @@ public class AdminService {
         }
     }
 
-    // Reject a poll and delete it from the database, also remove the poll ID from the user's pollIds list
+
     public String rejectPoll(String pollId) {
         Optional<Poll> pollOptional = pollRepository.findById(pollId);
         if (pollOptional.isPresent()) {
             Poll poll = pollOptional.get();
 
-            // Set the poll as rejected
-            poll.setApproved(false); // Update the poll status to rejected
-            pollRepository.save(poll); // Save the poll after status update
 
-            // Send rejection email to the poll creator
+            poll.setApproved(false);
+            pollRepository.save(poll);
+
+
             Optional<User> userOptional = userRepository.findById(poll.getCreatorId());
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
 
-                // Build structured email content
+
                 String emailBody = buildPollRejectionEmail(poll, user);
 
-                // Send rejection email
+
                 emailService.sendEmail(user.getEmail(), "Your Poll has been Rejected", emailBody);
 
-                // Remove the poll ID from the user's list of pollIds
+
                 List<String> pollIds = user.getPollIds();
                 if (pollIds != null && pollIds.contains(pollId)) {
-                    pollIds.remove(pollId);  // Remove the rejected poll ID from the user's poll list
+                    pollIds.remove(pollId);
                     user.setPollIds(pollIds);
-                    userRepository.save(user); // Save the updated user object
+                    userRepository.save(user);
                 }
             }
 
-            // Delete the rejected poll from the database
+
             pollRepository.delete(poll);
 
             return "Poll rejected, email sent, and deleted successfully.";
@@ -103,19 +103,19 @@ public class AdminService {
         }
     }
 
-    // Create default admin if not exists
+
     @PostConstruct
     public void createDefaultAdmin() {
         Admin admin = adminRepository.findByUsername("admin");
         if (admin == null) {
-            admin = new Admin(); // Create a new admin if not found
-            admin.setUsername("admin");  // Set default username
-            admin.setPassword("admin");  // Set default password
-            adminRepository.save(admin); // Save the default admin
+            admin = new Admin();
+            admin.setUsername("admin");
+            admin.setPassword("admin");
+            adminRepository.save(admin);
         }
     }
 
-    // Build structured email body for poll approval
+
     private String buildPollApprovalEmail(Poll poll, User user) {
         return "<h2>Your Poll has been Approved</h2>"
                 + "<p><strong>Poll Title:</strong> " + poll.getTitle() + "</p>"
@@ -126,7 +126,7 @@ public class AdminService {
                 + "<p>Thank you for using VoteSmart!</p>";
     }
 
-    // Build structured email body for poll rejection
+
     private String buildPollRejectionEmail(Poll poll, User user) {
         return "<h2>Your Poll has been Rejected</h2>"
                 + "<p><strong>Poll Title:</strong> " + poll.getTitle() + "</p>"

@@ -21,7 +21,7 @@ public class PollService {
     private UserRepository userRepository;
 
     @Autowired
-    private EmailService emailService; // Add email service dependency
+    private EmailService emailService;
 
     public Poll createPoll(String title, String description, List<Candidate> candidates, String creatorId) {
         candidates.forEach(candidate -> candidate.setId(UUID.randomUUID().toString()));

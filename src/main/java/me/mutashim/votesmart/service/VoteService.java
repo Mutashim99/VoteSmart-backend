@@ -23,22 +23,22 @@ public class VoteService {
 
     public String vote(String pollId, String candidateId, String voterId) {
 
-        // Check if the user has already voted in this poll
+
         if (voteRepository.existsByPollIdAndUserId(pollId, voterId)) {
             return "User has already voted in this poll.";
         }
 
-        // Fetch the poll from the repository
+
         Optional<Poll> optionalPoll = pollRepository.findById(pollId);
         if (optionalPoll.isPresent()) {
             Poll poll = optionalPoll.get();
 
-            // Check if the poll is approved before proceeding with voting
+
             if (!poll.isApproved()) {
                 return "This poll is not approved and cannot accept votes.";
             }
 
-            // Find the candidate in the poll
+
             Candidate candidate = poll.getCandidates().stream()
                     .filter(c -> c.getId().equals(candidateId))
                     .findFirst()
@@ -48,11 +48,11 @@ public class VoteService {
                 return "Candidate not found in the poll.";
             }
 
-            // Record the vote
+
             Vote vote = new Vote(pollId, candidateId, voterId);
             voteRepository.save(vote);
 
-            // Increment the candidate's vote count
+
             candidate.setVoteCount(candidate.getVoteCount() + 1);
             pollRepository.save(poll);
 

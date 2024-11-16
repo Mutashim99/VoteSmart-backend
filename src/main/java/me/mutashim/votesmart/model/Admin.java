@@ -11,10 +11,10 @@ public class Admin {
     private String username;
     private String password;
 
-    // Constructor
+
     public Admin() {
-        this.username = "admin";  // Default username
-        this.password = "admin";  // Default password
+        this.username = "admin";
+        this.password = "admin";
     }
 
     public String getUsername() {
