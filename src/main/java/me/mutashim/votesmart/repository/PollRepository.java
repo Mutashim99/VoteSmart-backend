@@ -6,4 +6,5 @@ import java.util.List;
 public interface PollRepository extends MongoRepository<Poll, String> {
     List<Poll> findByTitleContaining(String title);
     List<Poll> findByCreatorId(String creatorId);
+    List<Poll> findByApproved(boolean approved);
 }

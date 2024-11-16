@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,15 +41,12 @@ public class PollController {
         String userId = (String) session.getAttribute("userId");
 
         if (userId == null) {
-
             return ResponseEntity.status(401).body(Collections.emptyList());
-
         }
 
         List<Poll> userPolls = pollService.getPollsByUserId(userId);
         return ResponseEntity.ok(userPolls);
     }
-
 
     @GetMapping
     public ResponseEntity<List<Poll>> getAllPolls() {
@@ -74,4 +70,8 @@ public class PollController {
         pollService.removeCandidateFromPoll(pollId, candidateId);
         return ResponseEntity.ok("Candidate removed successfully.");
     }
+
+    // New methods for admin approval/rejection
+
+
 }

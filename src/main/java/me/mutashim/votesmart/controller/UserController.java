@@ -19,24 +19,26 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable String userId, HttpSession session) {
+    @GetMapping("/me")  // You can use "/me" to refer to the logged-in user's own data
+    public ResponseEntity<User> getUserById(HttpSession session) {
         String sessionUserId = (String) session.getAttribute("userId");
-        if (sessionUserId == null || !sessionUserId.equals(userId)) {
-            return ResponseEntity.status(401).body(null); // Unauthorized access
+        if (sessionUserId == null) {
+            return ResponseEntity.status(401).body(null); // Unauthorized access if no user is logged in
         }
-        Optional<User> user = userService.getUserById(userId);
+        Optional<User> user = userService.getUserById(sessionUserId);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
-    @GetMapping("/{userId}/polls")
-    public ResponseEntity<List<Poll>> getUserPolls(@PathVariable String userId, HttpSession session) {
+
+    @GetMapping("/me/polls")  // Use "/me/polls" to refer to the logged-in user's polls
+    public ResponseEntity<List<Poll>> getUserPolls(HttpSession session) {
         String sessionUserId = (String) session.getAttribute("userId");
-        if (sessionUserId == null || !sessionUserId.equals(userId)) {
-            return ResponseEntity.status(401).body(null); // Unauthorized access
+        if (sessionUserId == null) {
+            return ResponseEntity.status(401).body(null); // Unauthorized access if no user is logged in
         }
-        List<Poll> polls = userService.getUserPolls(userId);
+        List<Poll> polls = userService.getUserPolls(sessionUserId);
         return ResponseEntity.ok(polls);
     }
+
 }

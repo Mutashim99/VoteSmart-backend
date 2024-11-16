@@ -13,6 +13,7 @@ public class Poll {
     private String description;
     private List<Candidate> candidates;
     private String creatorId;
+    private boolean approved;
     public Poll() {}
 
     public Poll(String title, String description, List<Candidate> candidates, String creatorId) {
@@ -20,6 +21,13 @@ public class Poll {
         this.description = description;
         this.candidates = candidates;
         this.creatorId = creatorId;
+    }
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
     public String getId() {
