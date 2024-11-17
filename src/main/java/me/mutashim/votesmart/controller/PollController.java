@@ -27,7 +27,8 @@ public class PollController {
             HttpSession session) {
 
         String creatorId = (String) session.getAttribute("userId");
-
+        String userId = (String) session.getAttribute("userId");
+        System.out.println("User ID in session from PollController: " + userId);
         if (creatorId == null) {
             return ResponseEntity.status(401).body("User not authenticated.");
         }

@@ -33,12 +33,11 @@ public class UserController {
 
     @GetMapping("/me/polls")  // Use "/me/polls" to refer to the logged-in user's polls
     public ResponseEntity<List<Poll>> getUserPolls(HttpSession session) {
-        String sessionUserId = (String) session.getAttribute("userId");
-        if (sessionUserId == null) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
             return ResponseEntity.status(401).body(null); // Unauthorized access if no user is logged in
         }
-        List<Poll> polls = userService.getUserPolls(sessionUserId);
+        List<Poll> polls = userService.getUserPolls(userId);
         return ResponseEntity.ok(polls);
     }
-
 }

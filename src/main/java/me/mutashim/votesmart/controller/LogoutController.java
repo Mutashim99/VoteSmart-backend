@@ -12,7 +12,9 @@ public class LogoutController {
 
     @DeleteMapping
     public ResponseEntity<String> logout(HttpSession session) {
+        System.out.println("Logging out, invalidating session: " + session.getId());
         session.invalidate();
         return ResponseEntity.ok("User logged out successfully.");
     }
+
 }

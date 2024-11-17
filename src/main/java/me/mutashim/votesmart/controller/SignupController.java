@@ -14,10 +14,11 @@ public class SignupController {
     private SignupService signupService;
 
     @PostMapping
-    public ResponseEntity<String> registerUser(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            User user = signupService.registerUser(name, email, password);
-            return ResponseEntity.ok("User registered successfully: " + user.getId());
+            // Register user and save them with an empty pollIds list.
+            User createdUser = signupService.registerUser(user.getName(), user.getEmail(), user.getPassword());
+            return ResponseEntity.ok("User registered successfully: " + createdUser.getId());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

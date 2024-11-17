@@ -17,10 +17,13 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping
-    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password, HttpSession session) {
-        Optional<User> userOptional = loginService.loginUser(email, password);
+    public ResponseEntity<String> loginUser(@RequestBody User user, HttpSession session) {
+        Optional<User> userOptional = loginService.loginUser(user.getEmail(), user.getPassword());
         if (userOptional.isPresent()) {
-            session.setAttribute("userId", userOptional.get().getId());
+            String userId = userOptional.get().getId();
+            session.setAttribute("userId", userId);
+            System.out.println("Session ID: " + session.getId());
+            System.out.println("User ID set in session: " + userId); // Log to confirm
             return ResponseEntity.ok("Login successful. User ID stored in session.");
         } else {
             return ResponseEntity.status(401).body("Invalid email or password.");
@@ -36,5 +39,4 @@ public class LoginController {
             return ResponseEntity.status(401).body("No user ID in session.");
         }
     }
-
 }
