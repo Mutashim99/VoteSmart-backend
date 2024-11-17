@@ -2,6 +2,7 @@ package me.mutashim.votesmart.service;
 
 import me.mutashim.votesmart.model.Candidate;
 import me.mutashim.votesmart.model.Poll;
+import me.mutashim.votesmart.model.ResponseMessage;
 import me.mutashim.votesmart.model.Vote;
 import me.mutashim.votesmart.repository.PollRepository;
 import me.mutashim.votesmart.repository.VoteRepository;
@@ -21,23 +22,18 @@ public class VoteService {
     private VoteRepository voteRepository;
 
 
-    public String vote(String pollId, String candidateId, String voterId) {
-
-
+    public ResponseMessage vote(String pollId, String candidateId, String voterId) {
         if (voteRepository.existsByPollIdAndUserId(pollId, voterId)) {
-            return "User has already voted in this poll.";
+            return new ResponseMessage("User has already voted in this poll.", false);
         }
-
 
         Optional<Poll> optionalPoll = pollRepository.findById(pollId);
         if (optionalPoll.isPresent()) {
             Poll poll = optionalPoll.get();
 
-
             if (!poll.isApproved()) {
-                return "This poll is not approved and cannot accept votes.";
+                return new ResponseMessage("This poll is not approved and cannot accept votes.", false);
             }
-
 
             Candidate candidate = poll.getCandidates().stream()
                     .filter(c -> c.getId().equals(candidateId))
@@ -45,20 +41,18 @@ public class VoteService {
                     .orElse(null);
 
             if (candidate == null) {
-                return "Candidate not found in the poll.";
+                return new ResponseMessage("Candidate not found in the poll.", false);
             }
-
 
             Vote vote = new Vote(pollId, candidateId, voterId);
             voteRepository.save(vote);
 
-
             candidate.setVoteCount(candidate.getVoteCount() + 1);
             pollRepository.save(poll);
 
-            return "Vote recorded successfully.";
+            return new ResponseMessage("Vote recorded successfully.", true);
         } else {
-            return "Poll not found.";
+            return new ResponseMessage("Poll not found.", false);
         }
     }
 
