@@ -72,7 +72,6 @@ public class PollController {
         return ResponseEntity.ok("Candidate removed successfully.");
     }
 
-    // New methods for admin approval/rejection
 
 
 }

@@ -19,11 +19,11 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping("/me")  // You can use "/me" to refer to the logged-in user's own data
+    @GetMapping("/me")
     public ResponseEntity<User> getUserById(HttpSession session) {
         String sessionUserId = (String) session.getAttribute("userId");
         if (sessionUserId == null) {
-            return ResponseEntity.status(401).body(null); // Unauthorized access if no user is logged in
+            return ResponseEntity.status(401).body(null);
         }
         Optional<User> user = userService.getUserById(sessionUserId);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

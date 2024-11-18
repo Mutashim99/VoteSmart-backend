@@ -23,7 +23,7 @@ public class WebConfig {
                         .allowedOrigins("http://127.0.0.1:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true);  // Ensure cookies are included
+                        .allowCredentials(true);
             }
         };
     }
@@ -35,24 +35,24 @@ public class WebConfig {
             public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
                     throws IOException, ServletException {
 
-                // Cast ServletRequest to HttpServletRequest to access session
+
                 HttpServletRequest httpRequest = (HttpServletRequest) request;
                 HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-                // Get session ID from HttpServletRequest
+
                 String sessionId = httpRequest.getSession().getId();
 
-                // Create a new cookie for JSESSIONID
+
                 Cookie cookie = new Cookie("JSESSIONID", sessionId);
                 cookie.setPath("/");
                 cookie.setHttpOnly(true);
-                cookie.setSecure(false);  // Set to false for local development
-                cookie.setMaxAge(3600);   // Set session expiry (1 hour)
+                cookie.setSecure(false);
+                cookie.setMaxAge(3600);
 
-                // Manually set SameSite attribute in cookie header
+
                 httpResponse.addHeader("Set-Cookie", "JSESSIONID=" + sessionId + "; Path=/; HttpOnly; Max-Age=3600; SameSite=None; Secure");
 
-                // Proceed with the filter chain
+
                 chain.doFilter(request, response);
             }
         };

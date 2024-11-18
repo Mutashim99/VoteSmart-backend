@@ -16,7 +16,7 @@ public class SignupController {
     @PostMapping
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            // Register user and save them with an empty pollIds list.
+
             User createdUser = signupService.registerUser(user.getName(), user.getEmail(), user.getPassword());
             return ResponseEntity.ok("User registered successfully: " + createdUser.getId());
         } catch (IllegalArgumentException e) {
