@@ -71,5 +71,60 @@ public class PollService {
         });
     }
 
+    public Poll getPollWithCandidatesSortedAscending(String pollId) {
+        return pollRepository.findById(pollId)
+                .map(poll -> {
+                    LinkedList<Candidate> sortedCandidates = mergeSort(poll.getCandidates(), true); // Ascending
+                    poll.setCandidates(sortedCandidates);
+                    return poll;
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Poll not found."));
+    }
 
+    public Poll getPollWithCandidatesSortedDescending(String pollId) {
+        return pollRepository.findById(pollId)
+                .map(poll -> {
+                    LinkedList<Candidate> sortedCandidates = mergeSort(poll.getCandidates(), false); // Descending
+                    poll.setCandidates(sortedCandidates);
+                    return poll;
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Poll not found."));
+    }
+
+    private LinkedList<Candidate> mergeSort(LinkedList<Candidate> candidates, boolean ascending) {
+        if (candidates.size() <= 1) {
+            return candidates;
+        }
+
+        int mid = candidates.size() / 2;
+        LinkedList<Candidate> left = new LinkedList<>(candidates.subList(0, mid));
+        LinkedList<Candidate> right = new LinkedList<>(candidates.subList(mid, candidates.size()));
+
+        LinkedList<Candidate> sortedLeft = mergeSort(left, ascending);
+        LinkedList<Candidate> sortedRight = mergeSort(right, ascending);
+
+        return merge(sortedLeft, sortedRight, ascending);
+    }
+
+    private LinkedList<Candidate> merge(LinkedList<Candidate> left, LinkedList<Candidate> right, boolean ascending) {
+        LinkedList<Candidate> merged = new LinkedList<>();
+
+        while (!left.isEmpty() && !right.isEmpty()) {
+            boolean condition = ascending
+                    ? left.getFirst().getName().compareTo(right.getFirst().getName()) <= 0
+                    : left.getFirst().getName().compareTo(right.getFirst().getName()) > 0;
+
+            if (condition) {
+                merged.add(left.removeFirst());
+            } else {
+                merged.add(right.removeFirst());
+            }
+        }
+
+        merged.addAll(left);
+        merged.addAll(right);
+
+        return merged;
+    }
 }
+

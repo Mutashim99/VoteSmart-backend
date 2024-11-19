@@ -73,6 +73,15 @@ public class PollController {
         return ResponseEntity.ok("Candidate removed successfully.");
     }
 
+    @GetMapping("/{pollId}/sorted/asc")
+    public ResponseEntity<Poll> getPollWithCandidatesSortedAscending(@PathVariable String pollId) {
+        return ResponseEntity.ok(pollService.getPollWithCandidatesSortedAscending(pollId));
+    }
+
+    @GetMapping("/{pollId}/sorted/desc")
+    public ResponseEntity<Poll> getPollWithCandidatesSortedDescending(@PathVariable String pollId) {
+        return ResponseEntity.ok(pollService.getPollWithCandidatesSortedDescending(pollId));
+    }
 
 
 }
