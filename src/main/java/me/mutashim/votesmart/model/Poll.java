@@ -2,6 +2,8 @@ package me.mutashim.votesmart.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.LinkedList;
 import java.util.List;
 
 @Document(collection = "polls")
@@ -11,12 +13,12 @@ public class Poll {
     private String id;
     private String title;
     private String description;
-    private List<Candidate> candidates;
+    private LinkedList<Candidate> candidates;
     private String creatorId;
     private boolean approved;
     public Poll() {}
 
-    public Poll(String title, String description, List<Candidate> candidates, String creatorId) {
+    public Poll(String title, String description, LinkedList<Candidate> candidates, String creatorId) {
         this.title = title;
         this.description = description;
         this.candidates = candidates;
@@ -62,11 +64,11 @@ public class Poll {
         this.creatorId = creatorId;
     }
 
-    public List<Candidate> getCandidates() {
+    public LinkedList<Candidate> getCandidates() {
         return candidates;
     }
 
-    public void setCandidates(List<Candidate> candidates) {
+    public void setCandidates(LinkedList<Candidate> candidates) {
         this.candidates = candidates;
     }
 }

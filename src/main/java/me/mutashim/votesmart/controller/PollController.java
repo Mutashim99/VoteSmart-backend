@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class PollController {
     public ResponseEntity<?> createPoll(
             @RequestParam String title,
             @RequestParam String description,
-            @RequestBody List<Candidate> candidates,
+            @RequestBody LinkedList<Candidate> candidates,
             HttpSession session) {
 
         String creatorId = (String) session.getAttribute("userId");

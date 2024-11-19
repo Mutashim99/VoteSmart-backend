@@ -7,6 +7,8 @@ import me.mutashim.votesmart.repository.PollRepository;
 import me.mutashim.votesmart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,7 +25,7 @@ public class PollService {
     @Autowired
     private EmailService emailService;
 
-    public Poll createPoll(String title, String description, List<Candidate> candidates, String creatorId) {
+    public Poll createPoll(String title, String description, LinkedList<Candidate> candidates, String creatorId) {
         candidates.forEach(candidate -> candidate.setId(UUID.randomUUID().toString()));
 
         Poll poll = new Poll(title, description, candidates, creatorId);
