@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
 @Service
 public class AdminService {
@@ -87,7 +88,7 @@ public class AdminService {
                 emailService.sendEmail(user.getEmail(), "Your Poll has been Rejected", emailBody);
 
 
-                LinkedList<String> pollIds = user.getPollIds();
+                Stack<String> pollIds = user.getPollIds();
                 if (pollIds != null && pollIds.contains(pollId)) {
                     pollIds.remove(pollId);
                     user.setPollIds(pollIds);

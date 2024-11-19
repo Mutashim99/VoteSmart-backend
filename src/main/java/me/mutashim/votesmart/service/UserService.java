@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +43,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            LinkedList<String> pollIds = user.getPollIds();
+            Stack<String> pollIds = user.getPollIds();
             if (pollIds.contains(pollId)) {
                 pollIds.remove(pollId);
                 user.setPollIds(pollIds);

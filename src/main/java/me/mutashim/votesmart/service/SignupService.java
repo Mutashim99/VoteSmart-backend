@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 @Service
 public class SignupService {
@@ -19,7 +20,7 @@ public class SignupService {
             throw new IllegalArgumentException("Email is already in use.");
         }
 
-        User user = new User(name, email, password, new LinkedList<>());
+        User user = new User(name, email, password, new Stack<>());
         return userRepository.save(user);
     }
 }
