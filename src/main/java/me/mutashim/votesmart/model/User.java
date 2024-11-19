@@ -1,6 +1,8 @@
 package me.mutashim.votesmart.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.LinkedList;
 import java.util.List;
 
 @Document(collection = "user")
@@ -11,12 +13,12 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private List<String> pollIds;
+    private LinkedList<String> pollIds;
 
 
     public User() {}
 
-    public User(String name, String email, String password, List<String> pollIds) {
+    public User(String name, String email, String password, LinkedList<String> pollIds) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -56,11 +58,11 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getPollIds() {
+    public LinkedList<String> getPollIds() {
         return pollIds;
     }
 
-    public void setPollIds(List<String> pollIds) {
+    public void setPollIds(LinkedList<String> pollIds) {
         this.pollIds = pollIds;
     }
 }

@@ -7,6 +7,7 @@ import me.mutashim.votesmart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<String> pollIds = user.getPollIds();
+            LinkedList<String> pollIds = user.getPollIds();
             if (pollIds.contains(pollId)) {
                 pollIds.remove(pollId);
                 user.setPollIds(pollIds);

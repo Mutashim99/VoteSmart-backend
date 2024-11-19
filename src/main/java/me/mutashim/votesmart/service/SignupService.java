@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 @Service
 public class SignupService {
@@ -18,7 +19,7 @@ public class SignupService {
             throw new IllegalArgumentException("Email is already in use.");
         }
 
-        User user = new User(name, email, password, new ArrayList<>());
+        User user = new User(name, email, password, new LinkedList<>());
         return userRepository.save(user);
     }
 }
