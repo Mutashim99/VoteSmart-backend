@@ -126,5 +126,28 @@ public class PollService {
 
         return merged;
     }
+
+    public boolean deletePoll(String pollId, String userId) {
+        Optional<Poll> optionalPoll = pollRepository.findById(pollId);
+
+        if (optionalPoll.isPresent()) {
+            Poll poll = optionalPoll.get();
+
+            // Check if the user is the creator of the poll
+            if (poll.getCreatorId().equals(userId)) {
+                pollRepository.deleteById(pollId);
+
+                // Remove poll ID from the user's poll list
+                userRepository.findById(userId).ifPresent(user -> {
+                    user.getPollIds().remove(pollId);
+                    userRepository.save(user);
+                });
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 

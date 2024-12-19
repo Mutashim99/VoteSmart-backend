@@ -83,5 +83,22 @@ public class PollController {
         return ResponseEntity.ok(pollService.getPollWithCandidatesSortedDescending(pollId));
     }
 
+    @DeleteMapping("delete/{pollId}")
+    public ResponseEntity<String> deletePoll(@PathVariable String pollId, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId == null) {
+            return ResponseEntity.status(401).body("User not authenticated.");
+        }
+
+        boolean isDeleted = pollService.deletePoll(pollId, userId);
+
+        if (isDeleted) {
+            return ResponseEntity.ok("Poll deleted successfully.");
+        } else {
+            return ResponseEntity.status(403).body("You are not authorized to delete this poll or it does not exist.");
+        }
+    }
+
 
 }
