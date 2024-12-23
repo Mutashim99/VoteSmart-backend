@@ -11,7 +11,6 @@ public class ChatController {
 
     @Autowired
     private ChatService chatService;
-
     @PostMapping("/send")
     public ChatMessage sendMessage(@RequestBody ChatMessage userMessage) {
         String userInput = userMessage.getContent();
