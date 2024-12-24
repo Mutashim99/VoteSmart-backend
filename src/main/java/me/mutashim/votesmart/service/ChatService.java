@@ -29,32 +29,32 @@ public class ChatService {
     }
 
     public String getResponse(String userMessage) {
-        // Normalize the user input (remove special characters and make lowercase)
-        String normalizedMessage = userMessage.toLowerCase().trim().replaceAll("[^a-zA-Z0-9 ]", "");
-        System.out.println("User Input: " + normalizedMessage);  // Log the normalized input
 
-        // First, check for an exact match with predefined responses
+        String normalizedMessage = userMessage.toLowerCase().trim().replaceAll("[^a-zA-Z0-9 ]", "");
+        System.out.println("User Input: " + normalizedMessage);
+
+
         if (predefinedResponses.containsKey(normalizedMessage)) {
-            System.out.println("Exact Match Found: " + normalizedMessage);  // Log exact match
-            return predefinedResponses.get(normalizedMessage);  // Return the corresponding response
+            System.out.println("Exact Match Found: " + normalizedMessage);
+            return predefinedResponses.get(normalizedMessage);
         }
 
-        // If no exact match, check for partial matches by splitting user input into words
+
         for (String key : predefinedResponses.keySet()) {
             String normalizedKey = key.toLowerCase().trim().replaceAll("[^a-zA-Z0-9 ]", "");
-            System.out.println("Checking Key: " + normalizedKey);  // Log the normalized key
+            System.out.println("Checking Key: " + normalizedKey);
 
-            // Split user input and check each word against the key
+
             String[] userWords = normalizedMessage.split(" ");
             for (String word : userWords) {
                 if (normalizedKey.contains(word)) {
                     System.out.println("Matched by word: " + word);  // Log the matched word
-                    return predefinedResponses.get(key);  // Return the corresponding response
+                    return predefinedResponses.get(key);
                 }
             }
         }
 
-        // If no match is found, return a default response
+
         return "I'm here to help! Please try rephrasing your question or ask something else.";
     }
 

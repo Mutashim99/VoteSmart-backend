@@ -1,9 +1,13 @@
 package me.mutashim.votesmart.model;
 
 
+import java.util.Queue;
+
 public class ChatMessage {
     private String sender; // "user" or "bot"
     private String content;
+    Queue<String> msgQueue;
+
 
     public ChatMessage() {
     }
@@ -12,7 +16,11 @@ public class ChatMessage {
         this.sender = sender;
         this.content = content;
     }
-
+    public ChatMessage(String sender, String content, Queue<String> msgQueue) {
+        this.sender = sender;
+        this.content = content;
+        this.msgQueue = msgQueue;
+    }
     public String getSender() {
         return sender;
     }
