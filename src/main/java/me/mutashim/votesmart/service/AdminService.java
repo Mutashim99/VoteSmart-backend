@@ -123,7 +123,7 @@ public class AdminService {
                 + "<p><strong>Poll Title:</strong> " + poll.getTitle() + "</p>"
                 + "<p><strong>Poll Description:</strong> " + poll.getDescription() + "</p>"
                 + "<p><strong>Created by:</strong> " + user.getName() + " (" + user.getEmail() + ")</p>"
-                + "<p><strong>Poll URL:</strong> <a href='http://localhost:8080/poll/" + poll.getId() + "'>View Poll</a></p>"
+                + "<p><strong>Poll URL:</strong> <a href='http://127.0.0.1:3000/pages/result.html?id=" + poll.getId() + "'>View Poll</a></p>"
                 + "<p>Your poll is now live and ready to receive votes.</p>"
                 + "<p>Thank you for using VoteSmart!</p>";
     }
