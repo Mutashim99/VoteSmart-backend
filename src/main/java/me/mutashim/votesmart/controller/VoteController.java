@@ -26,17 +26,13 @@ public class VoteController {
             return ResponseEntity.status(401).body(new ResponseMessage("User not authenticated.", false));
         }
 
-        ResponseMessage result = voteService.vote(pollId, candidateId, voterId);
+        ResponseMessage result = voteService.vote(pollId, candidateId, voterId, session);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/{pollId}/results")
-    public ResponseEntity<List<Candidate>> getVotingResults(@PathVariable String pollId) {
-        List<Candidate> results = voteService.getVotingResults(pollId);
-        return ResponseEntity.ok(results);
-    }
 
-    @GetMapping("/{pollId}/hasVoted")
+
+@GetMapping("/{pollId}/hasVoted")
     public ResponseEntity<Boolean> hasVoted(@PathVariable String pollId, HttpSession session) {
         String voterId = (String) session.getAttribute("userId");
         if (voterId == null) {

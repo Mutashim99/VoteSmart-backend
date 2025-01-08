@@ -1,6 +1,7 @@
 package me.mutashim.votesmart.model;
 
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class ChatMessage {
@@ -19,7 +20,7 @@ public class ChatMessage {
     public ChatMessage(String sender, String content, Queue<String> msgQueue) {
         this.sender = sender;
         this.content = content;
-        this.msgQueue = msgQueue;
+        this.msgQueue = new LinkedList<>();
     }
     public String getSender() {
         return sender;

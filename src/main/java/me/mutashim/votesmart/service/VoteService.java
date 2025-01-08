@@ -9,6 +9,7 @@ import me.mutashim.votesmart.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,18 +22,21 @@ public class VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
+    @Autowired
+    private PollService pollService;
 
-    public ResponseMessage vote(String pollId, String candidateId, String voterId) {
-        if (voteRepository.existsByPollIdAndUserId(pollId, voterId)) {
-            return new ResponseMessage("User has already voted in this poll.", false);
-        }
-
+    public ResponseMessage vote(String pollId, String candidateId, String voterId, HttpSession session) {
         Optional<Poll> optionalPoll = pollRepository.findById(pollId);
+
         if (optionalPoll.isPresent()) {
             Poll poll = optionalPoll.get();
 
             if (!poll.isApproved()) {
                 return new ResponseMessage("This poll is not approved and cannot accept votes.", false);
+            }
+
+            if (!pollService.validateEmailDomain((String) session.getAttribute("email"), poll)) {
+                return new ResponseMessage("Invalid email domain for voting.", false);
             }
 
             Candidate candidate = poll.getCandidates().stream()
@@ -44,9 +48,11 @@ public class VoteService {
                 return new ResponseMessage("Candidate not found in the poll.", false);
             }
 
-            Vote vote = new Vote(pollId, candidateId, voterId);
-            voteRepository.save(vote);
+            if (voteRepository.existsByPollIdAndUserId(pollId, voterId)) {
+                return new ResponseMessage("User has already voted in this poll.", false);
+            }
 
+            voteRepository.save(new Vote(pollId, candidateId, voterId));
             candidate.setVoteCount(candidate.getVoteCount() + 1);
             pollRepository.save(poll);
 
@@ -58,7 +64,7 @@ public class VoteService {
 
 
 
-    public List<Candidate> getVotingResults(String pollId) {
+public List<Candidate> getVotingResults(String pollId) {
         return pollRepository.findById(pollId)
                 .map(Poll::getCandidates)
                 .orElseThrow(() -> new IllegalArgumentException("Poll not found."));

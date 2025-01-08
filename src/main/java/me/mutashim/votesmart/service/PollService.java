@@ -22,13 +22,10 @@ public class PollService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private EmailService emailService;
-
-    public Poll createPoll(String title, String description, LinkedList<Candidate> candidates, String creatorId) {
+    public Poll createPoll(String title, String description, LinkedList<Candidate> candidates, String creatorId, String pollType, String allowedDomain) {
         candidates.forEach(candidate -> candidate.setId(UUID.randomUUID().toString()));
 
-        Poll poll = new Poll(title, description, candidates, creatorId);
+        Poll poll = new Poll(title, description, candidates, creatorId, pollType, allowedDomain);
         Poll savedPoll = pollRepository.save(poll);
 
         userRepository.findById(creatorId).ifPresent(user -> {
@@ -38,6 +35,19 @@ public class PollService {
 
         return savedPoll;
     }
+
+    public boolean isDomainSpecificPoll(Poll poll) {
+        return "domain-specific".equalsIgnoreCase(poll.getPollType());
+    }
+
+    public boolean validateEmailDomain(String email, Poll poll) {
+        if (isDomainSpecificPoll(poll)) {
+            return email.endsWith("@" + poll.getAllowedDomain());
+        }
+        return true;
+    }
+
+
 
     public List<Poll> getPollsByUserId(String userId) {
         return pollRepository.findByCreatorId(userId); // Fetch polls by creator ID

@@ -25,20 +25,21 @@ public class PollController {
             @RequestParam String title,
             @RequestParam String description,
             @RequestBody LinkedList<Candidate> candidates,
+            @RequestParam String pollType,
+            @RequestParam(required = false) String allowedDomain,  // Domain field for domain-specific polls
             HttpSession session) {
 
         String creatorId = (String) session.getAttribute("userId");
-        String userId = (String) session.getAttribute("userId");
-        System.out.println("User ID in session from PollController: " + userId);
         if (creatorId == null) {
             return ResponseEntity.status(401).body("User not authenticated.");
         }
 
-        Poll poll = pollService.createPoll(title, description, candidates, creatorId);
+        Poll poll = pollService.createPoll(title, description, candidates, creatorId, pollType, allowedDomain);
         return ResponseEntity.ok(poll);
     }
 
-    @GetMapping("/user/polls")
+
+@GetMapping("/user/polls")
     public ResponseEntity<List<Poll>> getPollsByUser(HttpSession session) {
         String userId = (String) session.getAttribute("userId");
 
